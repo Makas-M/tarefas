@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -34,10 +36,28 @@ class _MyHomePageState extends State<MyHomePage> {
   //trocar de cor do icon de tarefa concluida ou pendente
   bool _isIconSelected = false;
 
-  void _toggleIconSelection() {
+  void _toggleIconSelection(int index) {
     setState(() {
       _isIconSelected = !_isIconSelected;
     });
+  }
+
+  void dispose() {
+    _saveData();
+    super.dispose();
+  }
+
+  Future<void> _saveData() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_items as String, '');
+  }
+
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString(_items as String);
+    if (value != null) {
+      // fazer algo com o valor recuperado
+    }
   }
 
   @override
@@ -87,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
             leading: const Icon(Icons.circle),
             iconColor: _isIconSelected ? Colors.green : Colors.black,
             onTap: () {
-              _toggleIconSelection();
+              _toggleIconSelection(index);
             },
             trailing: IconButton(
               icon: const Icon(Icons.delete, color: Colors.grey),
