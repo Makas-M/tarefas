@@ -38,6 +38,9 @@ dependencies:
   intl: ^0.18.0
   hive:
   shared_preferences:
+  hive_flutter:
+  path_provider:
+  
 
 dev_dependencies:
   flutter_test:
